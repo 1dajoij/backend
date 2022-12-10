@@ -4,7 +4,7 @@ import Aside from "./components/Aside/index.vue"
 import Main from "./components/Main/index.vue"
 import { ref } from "vue"
 import type {Ref} from "vue"
-const collapse: Ref<boolean> = ref(true);
+const collapse: Ref<boolean> = ref(false);
 function collapseToogle(): void {
   collapse.value = !collapse.value
 };
@@ -14,7 +14,7 @@ function collapseToogle(): void {
   <el-container class="layout-container-demo">
     <Aside :collapse="collapse" />
     <el-container>
-      <Header :collapse="collapse" @collapse-toogle="collapseToogle"/>
+      <Header :collapse="collapse" @collapse-toogle="collapseToogle()"/>
       <Main />
     </el-container>
   </el-container>

@@ -5,15 +5,15 @@ interface Props {
 };
 const {collapse} = defineProps<Props>();
 const emit = defineEmits<{
-    (e: "collapse-toogle"):void
-}>()
+    (e: "collapseToogle"):void
+}>();
 </script>
 
 <template>
     <el-header style="font-size: 12px;">
-        <el-icon style="font-size: 24px;">
-            <Expand v-if="!collapse" @click="emit("collapse-toogle")"/>
-            <Fold v-else/>
+        <el-icon style="font-size: 24px;" @click="emit('collapseToogle')">
+            <Expand v-if="collapse"/>
+            <Fold v-else />
         </el-icon>
         <div class="toolbar">
             <span class="name">Tom</span>
@@ -21,7 +21,7 @@ const emit = defineEmits<{
                 <el-avatar :icon="UserFilled" />
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>View</el-dropdown-item>
+                        <el-dropdown-item>退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>

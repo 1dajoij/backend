@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/node": "^18.11.11",
+    "axios": "^1.2.1",
     "element-plus": "^2.2.26",
     "pinia": "^2.0.27",
     "sass": "^1.56.1",

@@ -1,78 +1,50 @@
 <script setup lang="ts">
-import { Menu as IconMenu, Message, Setting } from '@element-plus/icons-vue'
+import { Menu as IconMenu, User,Document } from '@element-plus/icons-vue'
 interface Props {
     collapse:boolean
 };
-const {collapse} = defineProps<Props>();
+const {collapse: isCollapse} = defineProps<Props>();
 </script>
 
 <template>
     <el-aside>
         <el-scrollbar>
             <div class="logo">
-                一张图片
             </div>
-            <el-menu :default-openeds="['1']" :collapse="collapse">
+            <el-menu
+                :default-openeds="['1']"
+                :collapse="isCollapse"
+            >
                 <el-sub-menu index="1">
                     <template #title>
                         <el-icon>
-                            <message />
-                        </el-icon>Navigator One
+                            <icon-menu />
+                        </el-icon>
+                        <span>数据管理</span>
                     </template>
-                    <el-menu-item-group>
-                        <template #title>Group 1</template>
-                        <el-menu-item index="1-1">Option 1</el-menu-item>
-                        <el-menu-item index="1-2">Option 2</el-menu-item>
-                    </el-menu-item-group>
-                    <el-menu-item-group title="Group 2">
-                        <el-menu-item index="1-3">Option 3</el-menu-item>
-                    </el-menu-item-group>
-                    <el-sub-menu index="1-4">
-                        <template #title>Option4</template>
-                        <el-menu-item index="1-4-1">Option 4-1</el-menu-item>
-                    </el-sub-menu>
-                    <el-sub-menu index="1-5">
-                        <template #title>Option4</template>
-                        <el-menu-item index="1-5-1">Option 5-1</el-menu-item>
-                        <el-menu-item index="1-5-2">Option 5-1</el-menu-item>
-                        <el-menu-item index="1-5-3">Option 5-1</el-menu-item>
-                    </el-sub-menu>
+                    <el-menu-item index="1-1">基础信息</el-menu-item>
+                    <el-menu-item index="1-2">详细信息</el-menu-item>
+                    <el-menu-item index="1-3">黑名单</el-menu-item>
                 </el-sub-menu>
                 <el-sub-menu index="2">
                     <template #title>
-                        <el-icon><icon-menu /></el-icon>Navigator Two
+                        <el-icon>
+                            <document />
+                        </el-icon>
+                        <span>错误列表</span>
                     </template>
-                    <el-menu-item-group>
-                        <template #title>Group 1</template>
-                        <el-menu-item index="2-1">Option 1</el-menu-item>
-                        <el-menu-item index="2-2">Option 2</el-menu-item>
-                    </el-menu-item-group>
-                    <el-menu-item-group title="Group 2">
-                        <el-menu-item index="2-3">Option 3</el-menu-item>
-                    </el-menu-item-group>
-                    <el-sub-menu index="2-4">
-                        <template #title>Option 4</template>
-                        <el-menu-item index="2-4-1">Option 4-1</el-menu-item>
-                    </el-sub-menu>
+                    <el-menu-item index="2-1">基本信息错误</el-menu-item>
+                    <el-menu-item index="2-2">详情信息错误</el-menu-item>
+                    <el-menu-item index="2-3">播放地址错误</el-menu-item>
                 </el-sub-menu>
                 <el-sub-menu index="3">
                     <template #title>
                         <el-icon>
-                            <setting />
-                        </el-icon>Navigator Three
+                            <User />
+                        </el-icon>
+                        <span>用户管理</span>
                     </template>
-                    <el-menu-item-group>
-                        <template #title>Group 1</template>
-                        <el-menu-item index="3-1">Option 1</el-menu-item>
-                        <el-menu-item index="3-2">Option 2</el-menu-item>
-                    </el-menu-item-group>
-                    <el-menu-item-group title="Group 2">
-                        <el-menu-item index="3-3">Option 3</el-menu-item>
-                    </el-menu-item-group>
-                    <el-sub-menu index="3-4">
-                        <template #title>Option 4</template>
-                        <el-menu-item index="3-4-1">Option 4-1</el-menu-item>
-                    </el-sub-menu>
+                    <el-menu-item index="3-1">用户列表</el-menu-item>
                 </el-sub-menu>
             </el-menu>
         </el-scrollbar>
@@ -86,24 +58,26 @@ const {collapse} = defineProps<Props>();
     max-width: 200px;
     width: auto;
     .logo{
+        width: 100%;
         height: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
     }
     .el-menu {
         background-color: transparent;
         user-select: none;
         &:not(.el-menu--collapse){
-            width: 200px;
+            -width: 200px;
         }
-        .el-sub-menu{
-            --el-menu-hover-bg-color: var(--el-color-info-light-9);
-            --el-menu-active-color: var(--el-menu-text-color);
-            .el-menu-item.is-active{
-                background-color: var(--el-color-info-light-9);
-            }
-        }
+        // & .el-menu-item.is-active{
+        //     -background-color: var(--el-color-info-light-9);
+        //     color: rgb(183, 178, 177);
+        // }
+        // & .el-sub-menu.is-active {
+        //     background-color: var(--el-color-info-light-9);
+        // }
     }
 }
 </style>

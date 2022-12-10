@@ -8,10 +8,7 @@ import {resolve} from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue({
-      // 默认关闭
-      reactivityTransform: true
-    }),
+    vue(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),
