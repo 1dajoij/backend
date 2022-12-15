@@ -9,7 +9,11 @@ axios.interceptors.response.use(function (res) {
         return Promise.reject(res)
     }
 }, function (error) {
-    return Promise.reject(error);
+    console.error(error)
+    return {
+        code: 400,
+        message: "请稍后重试！"
+    }
 });
 
 export default axios;
