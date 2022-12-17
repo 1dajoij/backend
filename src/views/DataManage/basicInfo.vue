@@ -7,15 +7,17 @@ import { onMounted, ref, provide } from "vue";
 import type {InjectionKey} from "vue";
 
 const infolist = ref<IRequest.IbasicInfo[] | undefined>(undefined);
+const lens = ref<number | undefined>(undefined);
 
 const togglePage = async (page: number): Promise<void> => {
     const limit = (page - 1) * 30;
     const res = await getAllInfo(1, limit);
     if(res.code === 200) {
-        ((res as IRequest.IinfoList).infoList as IRequest.IbasicInfo[]).map(item => {
+        ((<IRequest.IinfoList>res).infoList as IRequest.IbasicInfo[]).map(item => {
             item.starring = item.starring.replace(/&/g, "、")
         });
-        infolist.value = (res as IRequest.IinfoList).infoList as IRequest.IbasicInfo[];
+        lens.value = (<IRequest.IinfoList>res).allLength
+        infolist.value = (<IRequest.IinfoList>res).infoList as IRequest.IbasicInfo[];
     }
 };
 
@@ -31,6 +33,6 @@ onMounted(() => {
 
 <template>
     <div class="basicInfo" style="height: 100%;overflow: hidden;">
-        <table-vue v-if="infolist" :data="infolist"/>
+        <table-vue v-if="infolist && lens" :data="infolist" :lens="lens"/>
     </div>
 </template>

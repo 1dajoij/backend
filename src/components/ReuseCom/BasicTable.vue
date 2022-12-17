@@ -4,6 +4,7 @@ import { changePage } from "@/untils/symbolKey";
 import { ref, watch , inject} from "vue";
 const props = defineProps<{
     data: IRequest.IbasicInfo[],
+    lens: number
 }>();
 
 const togglePage = inject<(page: number) => Promise<void>>(changePage);
@@ -31,7 +32,7 @@ watch(() => page.value, () => {
             <el-table-column prop="hot" label="hot" />
             <el-table-column prop="type" label="type" />
         </el-table>
-        <el-pagination v-model:current-page="page" background layout="prev, pager, next" :total="1000" />
+        <el-pagination v-model:current-page="page" background layout="prev, pager, next" :total="props.lens" :page-size="30"/>
     </div>
 </template>
 
