@@ -6,6 +6,7 @@ import { ref } from "vue"
 import type {Ref} from "vue"
 const collapse: Ref<boolean> = ref(false);
 function collapseToogle(): void {
+  console.log(123)
   collapse.value = !collapse.value
 };
 </script>

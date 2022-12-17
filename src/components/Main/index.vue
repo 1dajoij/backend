@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { useUserStore } from '@/store';
 const store = useUserStore();
-console.log(store.getIndex)
+console.log(store)
 </script>
 
 <template>
     <el-main>
-        main
-        <!-- <router-view></router-view> -->
+        <router-view></router-view>
     </el-main>
 </template>
 

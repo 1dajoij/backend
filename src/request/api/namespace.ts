@@ -4,7 +4,7 @@ export namespace IRequest {
         code: number,
         message?: string
     };
-    interface IbasicInfo {
+    export interface IbasicInfo {
         id:number,
         name: string,
         largest_amount: number | null,
@@ -16,7 +16,7 @@ export namespace IRequest {
         hot: number,
         type: string
     };
-    interface IspecificInfo {
+    export interface IspecificInfo {
         id: number,
         director: string,
         brief_introduction: string,

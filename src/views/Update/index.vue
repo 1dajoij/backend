@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div>updata</div>
 </template>
 
 <script setup lang="ts">

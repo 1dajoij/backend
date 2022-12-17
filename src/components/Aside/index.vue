@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { Menu as IconMenu, User,Document } from '@element-plus/icons-vue'
+import { watch, ref } from 'vue';
+import { useRouter } from 'vue-router';
 interface Props {
     collapse:boolean
 };
-const {collapse: isCollapse} = defineProps<Props>();
+const {collapse} = defineProps<Props>();
+
+const active = ref<string>("");
+
+const router = useRouter();
+watch(() => router.currentRoute.value.path, (toPath) => {
+    active.value = toPath;
+})
 </script>
 
 <template>
@@ -13,38 +22,40 @@ const {collapse: isCollapse} = defineProps<Props>();
             </div>
             <el-menu
                 :default-openeds="['1']"
-                :collapse="isCollapse"
+                :collapse="collapse"
+                :default-active="active"
+                router
             >
-                <el-sub-menu index="1">
+                <el-sub-menu index="/data_manage">
                     <template #title>
                         <el-icon>
                             <icon-menu />
                         </el-icon>
                         <span>数据管理</span>
                     </template>
-                    <el-menu-item index="1-1">基础信息</el-menu-item>
-                    <el-menu-item index="1-2">详细信息</el-menu-item>
-                    <el-menu-item index="1-3">黑名单</el-menu-item>
+                    <el-menu-item index="/data_manage/basic">基础信息</el-menu-item>
+                    <el-menu-item index="/data_manage/specific">详细信息</el-menu-item>
+                    <el-menu-item index="/data_manage/black">黑名单</el-menu-item>
                 </el-sub-menu>
-                <el-sub-menu index="2">
+                <el-sub-menu index="/errorlist">
                     <template #title>
                         <el-icon>
                             <document />
                         </el-icon>
                         <span>错误列表</span>
                     </template>
-                    <el-menu-item index="2-1">基本信息错误</el-menu-item>
-                    <el-menu-item index="2-2">详情信息错误</el-menu-item>
-                    <el-menu-item index="2-3">播放地址错误</el-menu-item>
+                    <el-menu-item index="/errorlist/basic">基本信息错误</el-menu-item>
+                    <el-menu-item index="/errorlist/specific">详情信息错误</el-menu-item>
+                    <el-menu-item index="/errorlist/movie">播放地址错误</el-menu-item>
                 </el-sub-menu>
-                <el-sub-menu index="3">
+                <el-sub-menu index="/user_manage">
                     <template #title>
                         <el-icon>
                             <User />
                         </el-icon>
                         <span>用户管理</span>
                     </template>
-                    <el-menu-item index="3-1">用户列表</el-menu-item>
+                    <el-menu-item index="/user_manage/userlist">用户列表</el-menu-item>
                 </el-sub-menu>
             </el-menu>
         </el-scrollbar>
