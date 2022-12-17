@@ -7,7 +7,6 @@ export async function getAllInfo(
     offset?: number,
     limit?: number,
 ): Promise<IRequest.IinfoList | IRequest.Irequest> {
-    console.log(type, offset, limit)
     const res: IRequest.IinfoList = await axios.post("/api/get/backend/info_list", {
         type, offset, limit
     });

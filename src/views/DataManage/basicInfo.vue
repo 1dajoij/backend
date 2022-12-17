@@ -10,9 +10,7 @@ const infolist = ref<IRequest.IbasicInfo[] | undefined>(undefined);
 
 const togglePage = async (page: number): Promise<void> => {
     const limit = (page - 1) * 30;
-    console.log(limit)
     const res = await getAllInfo(1, limit);
-    console.log(res)
     if(res.code === 200) {
         ((res as IRequest.IinfoList).infoList as IRequest.IbasicInfo[]).map(item => {
             item.starring = item.starring.replace(/&/g, "、")
