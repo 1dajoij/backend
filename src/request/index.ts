@@ -1,9 +1,13 @@
 import axios from "axios";
 import { showLoading, hideLoading } from "@/plugins/loading";
 
+// const instance = axios.create({
+//     baseURL: 'https://5k1677148c.yicp.fun/',
+// });
+
 axios.interceptors.request.use(config => {
     showLoading();
-    console.log(config)
+    // console.log(config)
     return config;
 }, err => {
     console.error(err);
@@ -20,6 +24,7 @@ axios.interceptors.response.use(function (res) {
         return Promise.reject(res)
     }
 }, function (error) {
+    hideLoading();
     console.error(error)
     return {
         code: 400,
