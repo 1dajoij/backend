@@ -13,6 +13,7 @@ export async function getAllInfo(
     return res;
 };
 
+// 获取黑名单列表
 export async function getBlackMovie(): Promise<IRequest.IblackList | IRequest.Irequest> {
     const res: IRequest.IblackList | IRequest.Irequest =  await axios.post("/api/get/backend/black_list");
     return res
@@ -26,10 +27,6 @@ export async function getId(id: number, type: 1 | 2 = 1): Promise<IRequest.IidIn
     return res
 }
 
-// 更新某条数据 --- ?
-
-
-
 // 将某条数据添加至黑名单
 export async function setBlackList(id: number): Promise<IRequest.Irequest> {
     const res: IRequest.Irequest = await axios.post("/api/set/black_list", {
@@ -39,7 +36,7 @@ export async function setBlackList(id: number): Promise<IRequest.Irequest> {
     });
     return res
 };
-// 将某条数据从黑名单移除
+// 将某条数据从黑名单移除 -- 之后需要添加身份验证
 export async function delectBlackList(id: number): Promise<IRequest.Irequest> {
     const res: IRequest.Irequest = await axios.post("/api/delete/black_list", {
         data: {
@@ -47,4 +44,7 @@ export async function delectBlackList(id: number): Promise<IRequest.Irequest> {
         }
     });
     return res
-}
+};
+
+
+// 更新某条数据 --- ?

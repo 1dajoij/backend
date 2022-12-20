@@ -36,6 +36,7 @@ declare module '@vue/runtime-core' {
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCom: typeof import('./src/components/ReuseCom/IconCom.vue')['default']
     IconItem: typeof import('./src/components/ReuseCom/IconItem.vue')['default']
+    InfoTable: typeof import('./src/components/ReuseCom/InfoTable.vue')['default']
     Loading: typeof import('./src/components/ReuseCom/Loading.vue')['default']
     Main: typeof import('./src/components/Main/index.vue')['default']
     MenuItem: typeof import('./src/components/ReuseCom/MenuItem.vue')['default']

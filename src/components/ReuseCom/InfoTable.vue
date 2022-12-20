@@ -3,11 +3,13 @@ import { IRequest } from "@/request/api/namespace";
 import { changePage } from "@/untils/symbolKey";
 import { ref, watch , inject} from "vue";
 const props = defineProps<{
-    data: IRequest.IbasicInfo[],
+    data: IRequest.IbasicInfo[] | IRequest.IspecificInfo[],
     lens: number
 }>();
 
 const togglePage = inject<(page: number) => Promise<void>>(changePage);
+
+console.log(props.data)
 
 const page = ref<number>(1);
 watch(() => page.value, () => {
@@ -17,20 +19,11 @@ watch(() => page.value, () => {
 
 <template>
     <div class="box">
-        <el-table :data="props.data" 
+        <el-table :data="props.data"
         height="calc(100vh - 180px)" style="width: calc(100% - 80px)"
         :row-style="{height: '86px'}"
         :row-key="(item: IRequest.IbasicInfo) => item.id">
-            <el-table-column fixed prop="id" label="Id" />
-            <el-table-column prop="name" label="Name" />
-            <el-table-column prop="largest_amount" label="largest_amount" />
-            <el-table-column prop="release_data" label="release_data" />
-            <el-table-column prop="score" label="score" />
-            <el-table-column prop="picUrl" label="picUrl" :show-overflow-tooltip="true"/>
-            <el-table-column prop="finish_state" label="finish_state" />
-            <el-table-column prop="starring" label="starring" :show-overflow-tooltip="true"/>
-            <el-table-column prop="hot" label="hot" />
-            <el-table-column prop="type" label="type" />
+            <el-table-column v-for="(_, key) in props.data[0]" :prop="key" :label="key" :show-overflow-tooltip="true" :fixed="key==='id'?true:false" />
         </el-table>
         <el-pagination v-model:current-page="page" background layout="prev, pager, next" :total="props.lens" :page-size="30"/>
     </div>
@@ -44,6 +37,10 @@ watch(() => page.value, () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    .el-table {
+        border-radius: 8px;
+        overflow: hidden;
+    }
     .el-pagination {
         margin: 36px 0 0 0;
     }
