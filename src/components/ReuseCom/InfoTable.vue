@@ -25,7 +25,7 @@ const editVisible = ref<boolean>(false);
 const toggleVisible = (): void => {
     editVisible.value = !editVisible.value
 };
-const editClick = (data): void => {
+const editClick = (data: Tsingledata): void => {
     editRef.value = data;
 };
 watch(() => editRef.value, () => {
@@ -34,7 +34,7 @@ watch(() => editRef.value, () => {
 </script>
 
 <template>
-    <div class="box" v-if="props.data && props.lens>0">
+    <div class="table-box" v-if="props.data && props.lens>0">
         <el-table :data="props.data"
         height="calc(100vh - 180px)" style="width: calc(100% - 80px)"
         :row-style="{height: '86px'}"
@@ -53,7 +53,7 @@ watch(() => editRef.value, () => {
                         <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item @click="toggleVisible">编辑</el-dropdown-item>
-                            <el-dropdown-item>添加至黑名单</el-dropdown-item>
+                            <el-dropdown-item disabled>添加至黑名单</el-dropdown-item>
                         </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -67,7 +67,7 @@ watch(() => editRef.value, () => {
 </template>
 
 <style scoped lang="scss">
-.box{
+.table-box{
     width: 100%;
     height: 100%;
     display: flex;
