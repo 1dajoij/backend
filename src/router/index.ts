@@ -44,6 +44,9 @@ const routes = [
             }
         ]
     }, {
+        path: "/",
+        redirect: "/data_manage/basic"
+    }, {
         path: "/:catchAll(.*)",
         component: () => import("@/views/Empty/index.vue")
     }

@@ -1,5 +1,4 @@
 export namespace IRequest {
-    // 正确信息一般不会带message
     export interface Irequest {
         code: number,
         message?: string

@@ -7,6 +7,7 @@ function startLoading(): void {
     loading = ElLoading.service({
         lock: true,
         fullscreen: false,
+        target: "#main"
     })
 };
 

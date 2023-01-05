@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {getBlackMovie} from "@/request/api/infoManage";
 
 </script>
 

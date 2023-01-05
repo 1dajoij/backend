@@ -5,7 +5,7 @@ console.log(store)
 </script>
 
 <template>
-    <el-main>
+    <el-main id="main">
         <router-view></router-view>
     </el-main>
 </template>

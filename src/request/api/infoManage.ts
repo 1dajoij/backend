@@ -12,13 +12,11 @@ export async function getAllInfo(
     });
     return res;
 };
-
 // 获取黑名单列表
 export async function getBlackMovie(): Promise<IRequest.IblackList | IRequest.Irequest> {
     const res: IRequest.IblackList | IRequest.Irequest =  await axios.post("/api/get/backend/black_list");
     return res
 }
-
 // 已id来搜索 单条数据
 export async function getId(id: number, type: 1 | 2 = 1): Promise<IRequest.IidInfo | IRequest.Irequest> {
     const res: IRequest.IidInfo | IRequest.Irequest = await axios.post("/api/get/backend/id_search", {
@@ -26,7 +24,6 @@ export async function getId(id: number, type: 1 | 2 = 1): Promise<IRequest.IidIn
     });
     return res
 }
-
 // 将某条数据添加至黑名单
 export async function setBlackList(id: number): Promise<IRequest.Irequest> {
     const res: IRequest.Irequest = await axios.post("/api/set/black_list", {
@@ -45,6 +42,27 @@ export async function delectBlackList(id: number): Promise<IRequest.Irequest> {
     });
     return res
 };
-
-
-// 更新某条数据 --- ?
+// 更新某条数据的某一个字段 --- key - 字段名  type - 表名
+export async function updateSingleField(
+    id: number,
+    key: string,
+    newvalue: unknown,
+    type?: 1 | 2
+): Promise<IRequest.Irequest> {
+    const res: IRequest.Irequest = await axios.post("/api/set/updata_info", {
+        id, key, newvalue, type
+    });
+    return res;
+};
+// 筛选
+export async function getFilterData(
+    key: string,
+    word: string,
+    offset: number,
+    type?: 1 | 2
+): Promise<IRequest.IinfoList | IRequest.Irequest> {
+    const res: IRequest.IinfoList = await axios.post("api/get/backend/filter", {
+        key, word, offset, type
+    });
+    return res;
+}

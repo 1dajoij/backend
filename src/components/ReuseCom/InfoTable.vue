@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { IRequest } from "@/request/api/namespace";
-import { EditPen } from "@element-plus/icons-vue";
+import { EditPen, Filter } from "@element-plus/icons-vue";
 import { changePage } from "@/untils/symbolKey";
-import { ref, watch , inject} from "vue";
+import { ref, watch , inject } from "vue";
 import Empty from "@/views/Empty/index.vue";
 import Edit from "@/components/ReuseCom/Edit.vue";
+import FilterVue from "@/components/ReuseCom/Filter.vue";
 type Tdata = IRequest.IbasicInfo[] | IRequest.IspecificInfo[];
 type Tsingledata = IRequest.IbasicInfo | IRequest.IspecificInfo;
 const props = defineProps<{
@@ -22,46 +23,62 @@ watch(() => page.value, () => {
 // Edit
 const editRef = ref<Tsingledata | undefined>(undefined);
 const editVisible = ref<boolean>(false);
-const toggleVisible = (): void => {
-    editVisible.value = !editVisible.value
+const EditToggleVisible = (): void => {
+    editVisible.value = !editVisible.value;
 };
 const editClick = (data: Tsingledata): void => {
     editRef.value = data;
 };
-watch(() => editRef.value, () => {
-    console.log(editRef.value)
-})
+
+// Filter
+const filterVisible = ref<boolean>(false);
+const FilterToggleVisible = (bool?: boolean): void => {
+    if(bool === undefined) {
+        filterVisible.value = !filterVisible.value
+    } else {
+        filterVisible.value = bool;
+    }
+};
 </script>
 
 <template>
     <div class="table-box" v-if="props.data && props.lens>0">
         <el-table :data="props.data"
-        height="calc(100vh - 180px)" style="width: calc(100% - 80px)"
-        :row-style="{height: '86px'}"
-        :row-key="(item: IRequest.IbasicInfo) => item.id"
-        @row-click="editClick"
+            height="calc(100vh - 180px)" style="width: calc(100% - 80px)"
+            :row-style="{height: '86px'}"
+            :row-key="(item: IRequest.IbasicInfo) => item.id"
+            @row-click="editClick"
         >
             <el-table-column v-for="(_, key) in props.data[0]" :prop="key" :label="key" :show-overflow-tooltip="true" :fixed="key==='id'?true:false" />
             <el-table-column fixed="right" align="center" max-width="76px" min-width="56px">
+                <template #header>
+                    <div class="filter" @click="FilterToggleVisible()">
+                        <el-icon>
+                            <Filter />
+                        </el-icon>
+                        <span>筛选</span>
+                    </div>
+                </template>
                 <template #default>
-                    <el-dropdown trigger="click">
-                        <div class="tools">
-                            <el-icon style="font-size: 20px;">
-                                <EditPen />
-                            </el-icon>
-                        </div>
-                        <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item @click="toggleVisible">编辑</el-dropdown-item>
-                            <el-dropdown-item disabled>添加至黑名单</el-dropdown-item>
-                        </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
+                    <div class="tools" @click="EditToggleVisible">
+                        <el-icon style="font-size: 20px;">
+                            <EditPen />
+                        </el-icon>
+                    </div>
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination v-model:current-page="page" background layout="prev, pager, next" :total="props.lens" :page-size="30"/>
-        <Edit :visible="editVisible" @toggle-visible="toggleVisible" :data="editRef"/>
+        <el-pagination hide-on-single-page v-model:current-page="page" background layout="prev, pager, next" :total="props.lens" :page-size="30"/>
+        <Edit
+            :visible="editVisible"
+            @toggle-visible="EditToggleVisible"
+            :data="editRef"
+        />
+        <FilterVue
+            :visible="filterVisible"
+            @toggle-visible="FilterToggleVisible"
+            :keys="props.data[0]"
+        />
     </div>
     <Empty v-else/>
 </template>
@@ -75,13 +92,28 @@ watch(() => editRef.value, () => {
     justify-content: center;
     align-items: center;
     .el-table {
-        border-radius: 8px;
         overflow: hidden;
+        border-radius: 8px;
         .tools {
             cursor: pointer;
             color: var(--el-text-color-secondary);
             transition: .3s;
             &:hover {
+                color: var(--el-color-primary);
+            }
+        }
+        .filter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            .el-icon {
+                font-size: 16px;
+                margin-right: 4px;
+                color: var(--el-text-color-secondary);
+                transition: .3s;
+            }
+            &:hover .el-icon {
                 color: var(--el-color-primary);
             }
         }
