@@ -20,8 +20,10 @@ const process = (res: IRequest.IinfoList | IRequest.Irequest): void => {
     };
 };
 
-const change = inject<
-    (page: number, type: 1 | 2) => Promise<IRequest.IinfoList | IRequest.Irequest>
+const change = inject<(
+        page: number, type: 1 | 2, limit?: number,
+        callback?: (type: 1 | 2, offset: number) => Promise<IRequest.IinfoList | IRequest.Irequest>
+    ) => Promise<IRequest.IinfoList | IRequest.Irequest>
 >(changePage);
 const filter = inject<
     (key: string, word: string, type: 1 | 2) => Promise<IRequest.IinfoList | IRequest.Irequest>

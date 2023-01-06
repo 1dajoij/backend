@@ -13,8 +13,10 @@ export async function getAllInfo(
     return res;
 };
 // 获取黑名单列表
-export async function getBlackMovie(): Promise<IRequest.IblackList | IRequest.Irequest> {
-    const res: IRequest.IblackList | IRequest.Irequest =  await axios.post("/api/get/backend/black_list");
+export async function getBlackMovie(offset?: number, limit?: number): Promise<IRequest.IblackList | IRequest.Irequest> {
+    const res: IRequest.IblackList | IRequest.Irequest =  await axios.post("/api/get/backend/black_list", {
+        offset, limit
+    });
     return res
 }
 // 已id来搜索 单条数据

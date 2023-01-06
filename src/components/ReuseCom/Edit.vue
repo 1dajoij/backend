@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import { IRequest } from "@/request/api/namespace";
 import { setBlackList, updateSingleField } from "@/request/api/infoManage";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
+import { useRoute } from 'vue-router';
 import DialogVue from "@/components/ReuseCom/Dialog.vue";
-import { ElMessage, ElNotification  } from 'element-plus'
-import { Delete, WarnTriangleFilled } from "@element-plus/icons-vue";
+import { ElNotification  } from 'element-plus'
+import { Minus, Plus, WarnTriangleFilled } from "@element-plus/icons-vue";
 type Tsingledata = IRequest.IbasicInfo | IRequest.IspecificInfo;
+const route = useRoute();
 const props = defineProps<{
     visible: boolean,
     data: Tsingledata | undefined
 }>();
 const emits = defineEmits<{
-    (e: "toggleVisible"): void
+    (e: "toggleVisible"): void,
+    (e: "refresh"): void
 }>();
 const visible = ref(false);
 watch(() => props.visible, () => {
-    visible.value = true;
+    visible.value = props.visible;
 });
 
 // input
@@ -59,7 +62,6 @@ const setBlacklist = async () => {
 // updateSingle
 const updateSingle = async (newvalue: string): Promise<void> => {
     if(props.data === undefined) return;
-    ElMessage({message: "正在修改，请稍后……", grouping: true, duration: 1200});
     let type: 1 | 2 = 1;
     const { id } = props.data;
     if((<IRequest.IbasicInfo>props.data).name) {
@@ -69,10 +71,17 @@ const updateSingle = async (newvalue: string): Promise<void> => {
     } else {
         return;
     };
-    console.log(id, propsKey.value, newvalue, type)
-    // const res = await updateSingleField(id, propsKey.value, newvalue, type);
-    ElNotification({title: "Success", message:"修改成功", type: "success", duration: 2500})
+    const {code} = await updateSingleField(id, propsKey.value, newvalue, type);
+    if(code === 200) {
+        emits("refresh");
+        ElNotification({title: "Success", message:"修改成功", type: "success", duration: 2500});
+        visible.value = false;
+    };
 };
+// 切换icon
+const isDelete = computed(() => {
+    return !(route.name === "black_list")
+});
 </script>
 
 <template>
@@ -80,8 +89,9 @@ const updateSingle = async (newvalue: string): Promise<void> => {
         <template #header>
             <span>编辑</span>
             <el-popconfirm
+                v-if="isDelete"
                 width="220"
-                confirm-button-text="Delete"
+                confirm-button-text="Confirm"
                 cancel-button-text="Cancel"
                 confirm-button-type="danger"
                 icon-color="#f56c6c"
@@ -90,7 +100,22 @@ const updateSingle = async (newvalue: string): Promise<void> => {
                 @confirm="setBlacklist"
             >
                 <template #reference>
-                    <el-button type="danger" :icon="Delete" circle/>
+                    <el-button type="danger" :icon="Plus" circle/>
+                </template>
+            </el-popconfirm>
+            <el-popconfirm
+                v-else
+                width="220"
+                confirm-button-text="Confirm"
+                cancel-button-text="Cancel"
+                confirm-button-type="primary"
+                icon-color="#409eff"
+                :icon="WarnTriangleFilled"
+                title="确定从黑名单中移除吗？"
+                @confirm="setBlacklist"
+            >
+                <template #reference>
+                    <el-button type="primary" :icon="Minus" circle/>
                 </template>
             </el-popconfirm>
         </template>

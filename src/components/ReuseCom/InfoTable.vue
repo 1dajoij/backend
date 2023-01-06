@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { IRequest } from "@/request/api/namespace";
+import { ElNotification  } from 'element-plus'
 import { EditPen, Filter } from "@element-plus/icons-vue";
-import { changePage } from "@/untils/symbolKey";
-import { ref, watch , inject } from "vue";
+import { ref, watch } from "vue";
 import Empty from "@/views/Empty/index.vue";
 import Edit from "@/components/ReuseCom/Edit.vue";
 import FilterVue from "@/components/ReuseCom/Filter.vue";
@@ -18,7 +18,7 @@ const props = defineProps<{
 
 const page = ref<number>(1);
 watch(() => page.value, () => {
-    props.togglePage && props.togglePage(page.value);
+    refresh();
 });
 
 // Edit
@@ -45,7 +45,15 @@ const ConfirmFilter = (key: string, word: string): void => {
 };
 const ResetFilter = () => {
     props.reset && props.reset();
-}
+};
+// refresh
+const refresh = (): void => {
+    if (props.togglePage) {
+        props.togglePage(page.value);
+    } else {
+        ElNotification({title: "Error", message:"网络出现问题，请稍后重试", type: "error", duration: 2500})
+    }
+};
 </script>
 
 <template>
@@ -86,6 +94,7 @@ const ResetFilter = () => {
         <Edit
             :visible="editVisible"
             @toggle-visible="EditToggleVisible"
+            @refresh="refresh"
             :data="editRef"
         />
         <FilterVue

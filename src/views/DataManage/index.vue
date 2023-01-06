@@ -22,18 +22,28 @@ const reset = async (type: 1 | 2): Promise<IRequest.IinfoList | IRequest.Ireques
     filter.word = "";
     return await togglePage(1, type);
 };
-const togglePage = async (page: number, type: 1 | 2, limit?: number): Promise<IRequest.IinfoList | IRequest.Irequest> => {
-    const offset = (page - 1) * 30;
+const togglePage = async (
+    page: number, type: 1 | 2, limit?: number,
+    callback?: (type: 1 | 2, offset: number) => Promise<IRequest.IinfoList | IRequest.Irequest>
+): Promise<IRequest.IinfoList | IRequest.Irequest> => {
+    const offset: number = (page - 1) * 30;
     let res: IRequest.IinfoList | IRequest.Irequest;
-    if((filter.key === "") || (filter.word === "")) {
-        res = await getAllInfo(type, offset);
+    if(callback) { // callback 用来提供相同类型的请求
+        res = await callback(type, offset);
     } else {
-        res = await getFilterData(filter.key, filter.word, offset, limit, type);
-    };
+        if((filter.key === "") || (filter.word === "")) {
+            res = await getAllInfo(type, offset);
+        } else {
+            res = await getFilterData(filter.key, filter.word, offset, limit, type);
+        };
+    }
     return res;
 };
 provide(
-    changePage as InjectionKey<(page: number, type: 1 | 2) => Promise<IRequest.IinfoList | IRequest.Irequest>>,
+    changePage as InjectionKey<(
+        page: number, type: 1 | 2, limit?: number,
+        callback?: (type: 1 | 2, offset: number) => Promise<IRequest.IinfoList | IRequest.Irequest>
+    ) => Promise<IRequest.IinfoList | IRequest.Irequest>>,
     togglePage
 );
 provide(

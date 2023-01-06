@@ -10,12 +10,15 @@ const routes = [
         children: [
             {
                 path: "basic",
+                name: "basic_list",
                 component: () => import("@/views/DataManage/basicInfo.vue")
             }, {
                 path: "specific",
+                name: "specific_list",
                 component: () => import("@/views/DataManage/specificInfo.vue")
             }, {
                 path: "black",
+                name: "black_list",
                 component: () => import("@/views/DataManage/blackList.vue")
             }
         ]
@@ -25,12 +28,15 @@ const routes = [
         children: [
             {
                 path: "basic",
+                name: "error_basic",
                 component: () => import("@/views/ErrorList/basicErroe.vue")
             }, {
                 path: "specific",
+                name: "error_specific",
                 component: () => import("@/views/ErrorList/specificError.vue")
             }, {
                 path: "movie",
+                name: "error_movie",
                 component: () => import("@/views/ErrorList/movieUrlError.vue")
             }
         ]
@@ -40,6 +46,7 @@ const routes = [
         children: [
             {
                 path: "userlist",
+                name: "userlist",
                 component: () => import("@/views/UserManage/userList.vue")
             }
         ]
