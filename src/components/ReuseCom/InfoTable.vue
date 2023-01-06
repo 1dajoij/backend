@@ -9,15 +9,16 @@ import FilterVue from "@/components/ReuseCom/Filter.vue";
 type Tdata = IRequest.IbasicInfo[] | IRequest.IspecificInfo[];
 type Tsingledata = IRequest.IbasicInfo | IRequest.IspecificInfo;
 const props = defineProps<{
-    data?: Tdata,
-    lens: number
+    lens: number,
+    data: Tdata,
+    togglePage: (page: number) => Promise<void>,
+    filter?: (key: string, word: string) => Promise<void>,
+    reset?: () => Promise<void>
 }>();
-
-const togglePage = inject<(page: number) => Promise<void>>(changePage);
 
 const page = ref<number>(1);
 watch(() => page.value, () => {
-    togglePage && togglePage(page.value);
+    props.togglePage && props.togglePage(page.value);
 });
 
 // Edit
@@ -39,6 +40,12 @@ const FilterToggleVisible = (bool?: boolean): void => {
         filterVisible.value = bool;
     }
 };
+const ConfirmFilter = (key: string, word: string): void => {
+    props.filter && props.filter(key, word)
+};
+const ResetFilter = () => {
+    props.reset && props.reset();
+}
 </script>
 
 <template>
@@ -51,7 +58,7 @@ const FilterToggleVisible = (bool?: boolean): void => {
         >
             <el-table-column v-for="(_, key) in props.data[0]" :prop="key" :label="key" :show-overflow-tooltip="true" :fixed="key==='id'?true:false" />
             <el-table-column fixed="right" align="center" max-width="76px" min-width="56px">
-                <template #header>
+                <template #header v-if="props.filter && props.reset">
                     <div class="filter" @click="FilterToggleVisible()">
                         <el-icon>
                             <Filter />
@@ -68,15 +75,25 @@ const FilterToggleVisible = (bool?: boolean): void => {
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination hide-on-single-page v-model:current-page="page" background layout="prev, pager, next" :total="props.lens" :page-size="30"/>
+        <el-pagination
+            hide-on-single-page
+            v-model:current-page="page"
+            background
+            layout="prev, pager, next"
+            :total="props.lens"
+            :page-size="30"
+        />
         <Edit
             :visible="editVisible"
             @toggle-visible="EditToggleVisible"
             :data="editRef"
         />
         <FilterVue
+            v-if="props.filter && props.reset"
             :visible="filterVisible"
             @toggle-visible="FilterToggleVisible"
+            @change-table-data="ConfirmFilter"
+            @reset-table-data="ResetFilter"
             :keys="props.data[0]"
         />
     </div>

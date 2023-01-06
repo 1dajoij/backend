@@ -58,11 +58,12 @@ export async function updateSingleField(
 export async function getFilterData(
     key: string,
     word: string,
-    offset: number,
+    offset?: number,
+    limit?: number,
     type?: 1 | 2
 ): Promise<IRequest.IinfoList | IRequest.Irequest> {
-    const res: IRequest.IinfoList = await axios.post("api/get/backend/filter", {
-        key, word, offset, type
+    const res: IRequest.IinfoList = await axios.post("/api/get/backend/filter", {
+        key, word, offset, limit, type
     });
     return res;
 }

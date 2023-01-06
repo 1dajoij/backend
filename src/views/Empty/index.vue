@@ -1,6 +1,14 @@
+<script setup lang="ts">
+const props = withDefaults(defineProps<{
+    description: string
+}>(), {
+    description: "暂无数据"
+});
+</script>
+
 <template>
     <div class="nothing">
-        <el-empty description="暂无数据" />
+        <el-empty :description="props.description" />
     </div>
 </template>
 

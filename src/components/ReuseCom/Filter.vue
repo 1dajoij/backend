@@ -9,7 +9,7 @@ const props = defineProps<{
 }>();
 const emits = defineEmits<{
     (e: "toggleVisible", bool: boolean): void,
-    (e: "changeTableData", search: string): void,
+    (e: "changeTableData", key: string, word: string): void,
     (e: "resetTableData"): void
 }>();
 const visible = ref<boolean>(false);
@@ -25,14 +25,20 @@ watch(() => visible.value, () => {
 const select = ref<string>("");
 // input
 const input = ref<string>("");
+// select_clear_input
+watch(() => select.value, () => {
+    input.value = "";
+});
 // confim
 const confim = (): void => {
-    input.value = input.value.trim();
-    if((select.value !== "") && (input.value !== "")) {
-        emits("changeTableData", input.value);
-        visible.value = !visible.value;
+    const value = input.value.trim();
+    if(select.value === "") {
+        ElMessage.warning("请检查筛选项是否正确");
+    } else if(value === "") {
+        ElMessage.warning("请填写筛选关键词");
     } else {
-        ElMessage.error("请检查筛选项是否正确")
+        emits("changeTableData", select.value, value);
+        visible.value = !visible.value;
     }
 };
 // reset
@@ -59,7 +65,7 @@ const reset = (): void => {
                     :value="key"
                 />
             </el-select>
-            <el-input v-model="input" placeholder="Please input" />
+            <el-input v-model="input" placeholder="请输入关键词" />
         </div>
         <template #footer>
             <span class="dialog-footer">
