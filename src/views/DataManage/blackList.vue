@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {getBlackMovie} from "@/request/api/infoManage";
 import InfoTable from '@/components/ReuseCom/InfoTable.vue';
+import Empty from "@/views/Empty/index.vue";
 import { IRequest } from "@/request/api/namespace";
-import { changePage, filterData, resetFilter } from "@/untils/symbolKey";
+import { changePage, resetFilter } from "@/untils/symbolKey";
 import { onMounted, ref, inject } from "vue";
 
 // 表格数据
@@ -26,11 +27,20 @@ const change = inject<(
     callback?: (type: 1 | 2, offset: number) => Promise<IRequest.IinfoList | IRequest.Irequest>
 ) => Promise<IRequest.IinfoList | IRequest.Irequest>
 >(changePage);
+const reset = inject<
+    (type: 1 | 2) => Promise<IRequest.IinfoList | IRequest.Irequest>
+>(resetFilter);
 const togglePage = async (page: number): Promise<void> => {
     if(change) {
         const res = await change(page, 1, 30, async (type, offset) => {
             return await getBlackMovie(offset)
         });
+        process(res);
+    }
+};
+const resetTable = async (): Promise<void> => {
+    if (reset) {
+        const res= await reset(2);
         process(res);
     }
 };
@@ -47,6 +57,7 @@ onMounted(() => {
             :lens="lens"
             :toggle-page="togglePage"
         />
+        <Empty v-else @click="resetTable" description="没有搜索到结果，如果是筛选导致可以点击页面返回"/>
     </div>
 </template>
 

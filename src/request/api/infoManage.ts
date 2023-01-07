@@ -29,18 +29,14 @@ export async function getId(id: number, type: 1 | 2 = 1): Promise<IRequest.IidIn
 // 将某条数据添加至黑名单
 export async function setBlackList(id: number): Promise<IRequest.Irequest> {
     const res: IRequest.Irequest = await axios.post("/api/set/black_list", {
-        data: {
-            id
-        }
+        id
     });
     return res
 };
 // 将某条数据从黑名单移除 -- 之后需要添加身份验证
-export async function delectBlackList(id: number): Promise<IRequest.Irequest> {
+export async function delectBlackList(id: number, type?:"delete"): Promise<IRequest.Irequest> {
     const res: IRequest.Irequest = await axios.post("/api/delete/black_list", {
-        data: {
-            id
-        }
+        id, type
     });
     return res
 };

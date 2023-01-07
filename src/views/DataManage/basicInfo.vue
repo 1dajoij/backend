@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import InfoTable from '@/components/ReuseCom/InfoTable.vue';
+import Empty from "@/views/Empty/index.vue";
 import { IRequest } from "@/request/api/namespace";
 import { changePage, filterData, resetFilter } from "@/untils/symbolKey";
 import { onMounted, ref, inject } from "vue";
@@ -64,5 +65,6 @@ onMounted(() => {
             :filter="filterTable"
             :reset="resetTable"
         />
+        <Empty v-else @click="resetTable" description="没有搜索到结果，如果是筛选导致可以点击页面返回"/>
     </div>
 </template>

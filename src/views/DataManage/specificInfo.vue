@@ -61,6 +61,6 @@ onMounted(() => {
             :filter="filterTable"
             :reset="resetTable"
             />
-        <Empty v-else @click="resetTable" description="没有搜索到结果，点击返回"/>
+        <Empty v-else @click="resetTable" description="没有搜索到结果，如果是筛选导致可以点击页面返回"/>
     </div>
 </template>

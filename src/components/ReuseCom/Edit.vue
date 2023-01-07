@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { IRequest } from "@/request/api/namespace";
-import { setBlackList, updateSingleField } from "@/request/api/infoManage";
+import { setBlackList, updateSingleField, delectBlackList } from "@/request/api/infoManage";
 import { ref, watch, computed } from "vue";
 import { useRoute } from 'vue-router';
 import DialogVue from "@/components/ReuseCom/Dialog.vue";
 import { ElNotification  } from 'element-plus'
-import { Minus, Plus, WarnTriangleFilled } from "@element-plus/icons-vue";
+import { Minus, Plus, WarnTriangleFilled, Delete } from "@element-plus/icons-vue";
 type Tsingledata = IRequest.IbasicInfo | IRequest.IspecificInfo;
 const route = useRoute();
 const props = defineProps<{
@@ -54,10 +54,20 @@ const handleClick = (key: string, val: string | number | null, bool: boolean): v
 // setBlacklist
 const setBlacklist = async () => {
     if(props.data === undefined) return;
-    console.log(props.data?.id);
-    // 添加至黑名单列表
-    const res = await setBlackList(346546546);
-    console.log(res)
+    const res = await setBlackList(props.data?.id);
+    if(res.code === 200) {
+        emits("refresh");
+        visible.value = false;
+    };
+};
+// deleteBlacklist
+const delectBlacklist = async (type?:"delete") => {
+    if(props.data === undefined) return;
+    const res = await delectBlackList(props.data?.id, type);
+    if(res.code === 200) {
+        emits("refresh");
+        visible.value = false;
+    };
 };
 // updateSingle
 const updateSingle = async (newvalue: string): Promise<void> => {
@@ -103,21 +113,36 @@ const isDelete = computed(() => {
                     <el-button type="danger" :icon="Plus" circle/>
                 </template>
             </el-popconfirm>
-            <el-popconfirm
-                v-else
-                width="220"
-                confirm-button-text="Confirm"
-                cancel-button-text="Cancel"
-                confirm-button-type="primary"
-                icon-color="#409eff"
-                :icon="WarnTriangleFilled"
-                title="确定从黑名单中移除吗？"
-                @confirm="setBlacklist"
-            >
-                <template #reference>
-                    <el-button type="primary" :icon="Minus" circle/>
-                </template>
-            </el-popconfirm>
+            <template v-else>
+                <el-popconfirm
+                    width="220"
+                    confirm-button-text="Confirm"
+                    cancel-button-text="Cancel"
+                    confirm-button-type="primary"
+                    icon-color="#409eff"
+                    :icon="WarnTriangleFilled"
+                    title="确定取消添加至黑名单吗？"
+                    @confirm="delectBlacklist"
+                >
+                    <template #reference>
+                        <el-button type="primary" :icon="Minus" circle/>
+                    </template>
+                </el-popconfirm>
+                <el-popconfirm
+                    width="220"
+                    confirm-button-text="Confirm"
+                    cancel-button-text="Cancel"
+                    confirm-button-type="danger"
+                    icon-color="#f56c6c"
+                    :icon="WarnTriangleFilled"
+                    title="确定删除此条数据吗？"
+                    @confirm="delectBlacklist('delete')"
+                >
+                    <template #reference>
+                        <el-button type="danger" :icon="Delete" circle/>
+                    </template>
+                </el-popconfirm>
+            </template>
         </template>
         <el-scrollbar>
             <div class="input-item" v-for="(value, key, index) in props.data" :key="index">
